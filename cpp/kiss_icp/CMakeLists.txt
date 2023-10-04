@@ -48,6 +48,16 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 include(3rdparty/find_dependencies.cmake)
 include(cmake/CompilerOptions.cmake)
 
+find_package(PCL REQUIRED)
+find_package(Boost REQUIRED COMPONENTS filesystem)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PCL_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
+
 add_subdirectory(core)
 add_subdirectory(metrics)
 add_subdirectory(pipeline)
+
+add_executable(main main.cpp)
+target_link_libraries(main "Eigen3::Eigen" "kiss_icp::pipeline" ${Boost_LIBRARIES} ${PCL_LIBRARIES})
